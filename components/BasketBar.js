@@ -11,7 +11,10 @@ const BasketBar = () => {
 
   return (
     <View className="absolute w-full z-50 bottom-4">
-     <TouchableOpacity className="flex-row space-x-2 items-center bg-[#00CCBB] m-4 p-4 rounded-lg">
+     <TouchableOpacity 
+     className="flex-row space-x-2 items-center bg-[#00CCBB] m-4 p-4 rounded-lg"
+     onPress={() => navigation.navigate("Basket")}
+     >
         <Text className="font-extrabold text-lg text-white bg-[#01A296] py-1 px-2">{items.length}</Text>
         <Text className="flex-1 text-center text-white font-extrabold text-lg">Warenkorb ansehen</Text>
         <Text className="text-lg text-white font-bold">{basketTotal + ' €'}</Text>

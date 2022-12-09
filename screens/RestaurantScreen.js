@@ -7,11 +7,15 @@ import { StarIcon, MapPinIcon, ChevronRightIcon } from 'react-native-heroicons/s
 import DishRow from '../components/DishRow';
 import BasketBar from '../components/BasketBar';
 import {DIRECTUS_BASE_URL, DIRECTUS_JWT_TOKEN} from '@env'
+import { useDispatch, useSelector } from 'react-redux';
+import { getRestaurant, setRestaurant } from '../features/restaurantSlice';
 
 const RestaurantScreen = () => {
 
     const navigation = useNavigation();
-    const [restaurant, setRestaurant] = useState(null)
+    const dispatch = useDispatch();
+
+    const restaurant = useSelector((state) =>  getRestaurant(state));
 
     const {
         params: {
@@ -25,6 +29,7 @@ const RestaurantScreen = () => {
         });
     }, []);
 
+
     useEffect(() => {
         axios.get(DIRECTUS_BASE_URL+'/items/Restaurants/' + id + '?fields=*,Kategorien.Kategorien_id.Name,Gerichte.*',
             {
@@ -34,9 +39,9 @@ const RestaurantScreen = () => {
             })
             .then((response) => {
                 {
-                    setRestaurant(response.data.data);
+                    dispatch(setRestaurant(response.data.data));
                 }
-            })
+            });
 
     }, [id])
 
