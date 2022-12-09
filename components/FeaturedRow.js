@@ -2,8 +2,10 @@ import { View, Text, ScrollView } from 'react-native'
 import React from 'react'
 import { ArrowRightIcon } from 'react-native-heroicons/outline'
 import RestaurantCard from './RestaurantCard'
+import {DIRECTUS_BASE_URL} from '@env'
 
-const FeaturedRow = ({ title, description, id }) => {
+const FeaturedRow = ({ title, description, id, restaurants }) => {
+
     return (
         <View>
             {/** Header */}
@@ -20,42 +22,20 @@ const FeaturedRow = ({ title, description, id }) => {
                 horizontal
                 showsHorizontalScrollIndicator={false}
             >
-                <RestaurantCard
-                    id={123}
-                    imgUrl="https://links.papareact.com/gn7"
-                    title="Test Title Res"
-                    rating={4.6}
-                    genre="Japanese"
-                    address="blubbuoo"
-                    short_description="short desc"
-                    dishes={[]}
-                    long={20}
-                    lat={0}
-                />
-                <RestaurantCard
-                    id={123}
-                    imgUrl="https://links.papareact.com/gn7"
-                    title="Test Title Res"
-                    rating={4.6}
-                    genre="Japanese"
-                    address="blubbuoo"
-                    short_description="short desc"
-                    dishes={[]}
-                    long={20}
-                    lat={0}
-                />
-                <RestaurantCard
-                    id={123}
-                    imgUrl="https://links.papareact.com/gn7"
-                    title="Test Title Res"
-                    rating={4.6}
-                    genre="Japanese"
-                    address="blubbuoo"
-                    short_description="short desc"
-                    dishes={[]}
-                    long={20}
-                    lat={0}
-                />
+                {
+                    restaurants?.map((restaurantId) =>{
+                        const restaurant = restaurantId.Restaurants_id;
+                        return <RestaurantCard 
+                            key={restaurant.id}
+                            id={restaurant.id}
+                            title={restaurant.Name}
+                            rating={restaurant.Bewertung}
+                            genre={restaurant.Kategorien[0].Kategorien_id.Name}
+                            imgUrl={DIRECTUS_BASE_URL+"/assets/"+restaurant.Bild}
+                        />
+
+                    })
+                }
             </ScrollView>
         </View>
     )

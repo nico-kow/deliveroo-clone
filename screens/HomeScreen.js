@@ -1,13 +1,25 @@
 import { Text, SafeAreaView, View, Image, StyleSheet, StatusBar, TextInput, ScrollView } from 'react-native'
-import React, { useLayoutEffect } from 'react'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { ChevronDownIcon, UserIcon, AdjustmentsVerticalIcon, MagnifyingGlassIcon } from "react-native-heroicons/outline";
 import Categories from '../components/Categories';
 import FeaturedRow from '../components/FeaturedRow';
+import axios from "axios";
+import {DIRECTUS_BASE_URL, DIRECTUS_JWT_TOKEN} from '@env'
 
 
 const HomeScreen = () => {
     const navigation = useNavigation();
+    const [featuredCategories, setFeaturedCategories] = useState([]);
+
+
+    function getAllFeatures() {
+        return axios.get(DIRECTUS_BASE_URL+'/items/Featured?fields=id,Name,Kurzbeschreibung,Restaurants.Restaurants_id.id,Restaurants.Restaurants_id.Name,Restaurants.Restaurants_id.Bewertung,Restaurants.Restaurants_id.Bild,Restaurants.Restaurants_id.Kategorien.Kategorien_id.Name', {
+            headers: {
+                "Authorization": "Bearer "+DIRECTUS_JWT_TOKEN
+            }
+        });
+    }
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -15,8 +27,18 @@ const HomeScreen = () => {
         });
     }, []);
 
+
+    useEffect(() => {
+        getAllFeatures().then((response) => {
+            setFeaturedCategories(response.data.data);
+        });
+    }, []);
+
+
+
     return (
         <SafeAreaView className=" pt-9 bg-white">
+
             {/** Header */}
             <View className="bg-white">
                 <View className="flex-row pb-3 items-center space-x-2 px-2">
@@ -52,26 +74,27 @@ const HomeScreen = () => {
             {/** Body */}
 
             {/** Categories */}
-            <ScrollView >
+            <ScrollView 
+            className="bg-gray-100"
+            contentContainerStyle={{
+                paddingBottom: 150,
+            }}
+            >
                 <Categories />
-            </ScrollView>
 
-            {/** Featured Rows */}
-            <FeaturedRow
-                title="TestTitle 1"
-                description="TestDescription 1"
-                id="1"
-            />
-            <FeaturedRow
-                title="TestTitle 2"
-                description="TestDescription 2"
-                id="2"
-            />
-            <FeaturedRow
-                title="TestTitle 2"
-                description="TestDescription 2"
-                id="3"
-            />
+                {/** Featured Rows */}
+                {
+                    featuredCategories?.map((category) => {
+                        return <FeaturedRow 
+                            key={category.id}
+                            id={category.id}
+                            title={category.Name}
+                            description={category.Kurzbeschreibung}
+                            restaurants={category.Restaurants}
+                        />
+                    })
+                }
+            </ScrollView>
         </SafeAreaView>
     )
 }
