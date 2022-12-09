@@ -13,6 +13,8 @@ const BasketScreen = () => {
   const restaurant = useSelector((state) => getRestaurant(state));
 
 
+  console.log('basket: '+JSON.stringify(restaurant));
+
   return (
     <SafeAreaView>
       {/** Header */}
