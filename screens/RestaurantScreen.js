@@ -42,7 +42,7 @@ const RestaurantScreen = () => {
             {
                 isSuccess && (
                     <>
-                        <View>
+                        <View className="flex-1">
                             {
                                 basketItems?.length > 0 ? <BasketBar /> : null
                             }
