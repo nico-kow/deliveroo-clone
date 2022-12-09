@@ -16,11 +16,11 @@ const BasketScreen = () => {
   return (
     <SafeAreaView>
       {/** Header */}
-      <View className="bg-white pt-8 pb-4 items-center space-y-1">
+      <View className="bg-white pt-12 pb-4 items-center space-y-1">
         <Text className="text-lg font-bold">Warenkorb</Text>
         <Text className="text-gray-500">{restaurant.Name}</Text>
         <TouchableOpacity 
-        className="absolute top-6 right-2"
+        className="absolute top-10 right-2"
         onPress={() => navigation.goBack()}
         >
           <XCircleIcon size={50} color="#00CCBB" />
