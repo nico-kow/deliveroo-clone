@@ -14,6 +14,7 @@ const FeaturedRow = ({ title, description, id, restaurants }) => {
                 <ArrowRightIcon color="#00CCBB" />
             </View>
 
+
             {/** Description */}
             <Text className="px-2 text-xs text-gray-500">{description}</Text>
 

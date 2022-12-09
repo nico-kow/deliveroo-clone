@@ -5,36 +5,19 @@ import { ChevronDownIcon, UserIcon, AdjustmentsVerticalIcon, MagnifyingGlassIcon
 import Categories from '../components/Categories';
 import FeaturedRow from '../components/FeaturedRow';
 import axios from "axios";
-import {DIRECTUS_BASE_URL, DIRECTUS_JWT_TOKEN} from '@env'
+import useFeatures from '../hooks/UseFeatures';
 
 
 const HomeScreen = () => {
     const navigation = useNavigation();
-    const [featuredCategories, setFeaturedCategories] = useState([]);
+    const { data, isLoading, isSuccess } = useFeatures();
 
-
-    function getAllFeatures() {
-        return axios.get(DIRECTUS_BASE_URL+'/items/Featured?fields=id,Name,Kurzbeschreibung,Restaurants.Restaurants_id.id,Restaurants.Restaurants_id.Name,Restaurants.Restaurants_id.Bewertung,Restaurants.Restaurants_id.Bild,Restaurants.Restaurants_id.Kategorien.Kategorien_id.Name', {
-            headers: {
-                "Authorization": "Bearer "+DIRECTUS_JWT_TOKEN
-            }
-        });
-    }
 
     useLayoutEffect(() => {
         navigation.setOptions({
             headerShown: false,
         });
     }, []);
-
-
-    useEffect(() => {
-        getAllFeatures().then((response) => {
-            setFeaturedCategories(response.data.data);
-        });
-    }, []);
-
-
 
     return (
         <SafeAreaView className=" pt-9 bg-white">
@@ -74,25 +57,31 @@ const HomeScreen = () => {
             {/** Body */}
 
             {/** Categories */}
-            <ScrollView 
-            className="bg-gray-100"
-            contentContainerStyle={{
-                paddingBottom: 150,
-            }}
+            <ScrollView
+                className="bg-gray-100"
+                contentContainerStyle={{
+                    paddingBottom: 150,
+                }}
             >
                 <Categories />
 
                 {/** Featured Rows */}
                 {
-                    featuredCategories?.map((category) => {
-                        return <FeaturedRow 
-                            key={category.id}
-                            id={category.id}
-                            title={category.Name}
-                            description={category.Kurzbeschreibung}
-                            restaurants={category.Restaurants}
-                        />
-                    })
+                    isSuccess && (
+                        <>
+                            {
+                                data?.map((category) => {
+                                    return <FeaturedRow
+                                        key={category.id}
+                                        id={category.id}
+                                        title={category.Name}
+                                        description={category.Kurzbeschreibung}
+                                        restaurants={category.Restaurants}
+                                    />
+                                })
+                            }
+                        </>
+                    )
                 }
             </ScrollView>
         </SafeAreaView>
