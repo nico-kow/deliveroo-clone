@@ -6,6 +6,8 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { Provider } from 'react-redux'
 import { store } from './store';
 import BasketScreen from './screens/BasketScreen';
+import OrderingScreen from './screens/OrderingScreen';
+import DeliveryScreen from './screens/DeliveryScreen';
 
 
 const Stack = createNativeStackNavigator();
@@ -23,6 +25,14 @@ export default function App() {
             <Stack.Screen name="Restaurant" component={RestaurantScreen} />
             <Stack.Screen name="Basket" component={BasketScreen} options={{
               presentation: "modal",
+              headerShown: false
+            }} />
+            <Stack.Screen name="Ordering" component={OrderingScreen} options={{
+              presentation: "fullScreenModal",
+              headerShown: false
+            }} />
+            <Stack.Screen name="Delivery" component={DeliveryScreen} options={{
+              presentation: "fullScreenModal",
               headerShown: false
             }} />
           </Stack.Navigator>

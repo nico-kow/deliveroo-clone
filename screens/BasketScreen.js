@@ -95,7 +95,10 @@ const BasketScreen = () => {
           <Text className="text-lg font-bold">Gesamt</Text>
           <Text className="text-lg font-bold">{`${parseFloat(basketTotal)+4.99} €`}</Text>
         </View>
-        <TouchableOpacity className="bg-[#00CCBB] items-center p-4 rounded-sm">
+        <TouchableOpacity 
+        className="bg-[#00CCBB] items-center p-4 rounded-sm"
+        onPress={() => navigation.navigate('Ordering')}
+        >
           <Text className="text-white font-bold text-lg">Bestellen</Text>
         </TouchableOpacity>
       </View>
